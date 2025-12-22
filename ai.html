@@ -55,6 +55,10 @@
       .v-slide{height:280px}
     }
 
+    /* Top navigation (common) */
+    .top-nav{position:sticky;top:0;background:#fff;padding:8px 16px;box-shadow:0 2px 6px rgba(0,0,0,0.06);z-index:1200}
+    .top-nav .home-link{color:#1e1e1e;text-decoration:none;font-weight:600}
+
     /* Orbital selection nodes */
     .container {
         width: 800px;
@@ -173,6 +177,9 @@
   </style>
 </head>
 <body>
+    <nav class="top-nav">
+      <a href="index.html" class="home-link">← Home</a>
+    </nav>
   <main class="hero">
     <section class="carousel" aria-label="AI carousel">
       <div class="slides" id="slides">

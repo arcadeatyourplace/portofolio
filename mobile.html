@@ -63,6 +63,10 @@
 			.project-video{width:100%;flex:0 0 auto}
 		}
 
+		/* Top navigation (common) */
+		.top-nav{position:sticky;top:0;background:#fff;padding:8px 16px;box-shadow:0 2px 6px rgba(0,0,0,0.06);z-index:1200}
+		.top-nav .home-link{color:var(--accent);text-decoration:none;font-weight:600}
+
 		/* Separator between project sections */
 		.section-sep{height:1px;background:#e6e6e6;margin:18px 0;border-radius:2px}
 
@@ -91,6 +95,9 @@
 	</style>
 </head>
 <body>
+	<nav class="top-nav">
+		<a href="index.html" class="home-link">← Home</a>
+	</nav>
 	<header class="hero" style="background-image:url('assets/banner.png')">
 		<div class="overlay">
 			<h1>Mobile Experience</h1>
