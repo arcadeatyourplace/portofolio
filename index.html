@@ -67,6 +67,48 @@
             color: #666;
             font-size: 0.9rem;
         }
+
+        /* Mobile Experience layout: image left, text right */
+        .mobile-experience {
+            display: flex;
+            gap: 24px;
+            align-items: center;
+        }
+
+        .mobile-experience img {
+            width: 160px;
+            height: auto;
+            object-fit: cover;
+            border-radius: 8px;
+            flex-shrink: 0;
+            box-shadow: 0 4px 14px rgba(0,0,0,0.08);
+        }
+
+        .mobile-experience .content {
+            flex: 1;
+        }
+
+        .mobile-experience .content p {
+            margin-top: 8px;
+            line-height: 1.5;
+        }
+
+        @media (max-width: 700px) {
+            .mobile-experience {
+                flex-direction: column;
+                text-align: center;
+                gap: 12px;
+            }
+
+            .mobile-experience img {
+                width: 80%;
+                max-width: 300px;
+            }
+
+            .mobile-experience .content {
+                padding: 0 8px;
+            }
+        }
     </style>
 </head>
 
@@ -80,7 +122,13 @@
     <!-- ===== MOBILE EXPERIENCE ===== -->
     <section id="mobile">
         <h2>Mobile Experience</h2>
-        <p>[Add content about your mobile development experience here]</p>
+        <div class="mobile-experience">
+            <img src="assets/mobile-example.jpg" alt="Mobile app screenshot">
+            <div class="content">
+                <p><strong>Mobile Developer —</strong> I design and build native and cross-platform mobile apps for Android and iOS. My experience includes working with Kotlin, Swift, Flutter, and React Native to deliver performant, accessible, and user-friendly applications.</p>
+                <p>Highlights: offline-first architectures, REST and GraphQL integrations, CI/CD for app stores, performance profiling, and integrating device features like camera, sensors and push notifications.</p>
+            </div>
+        </div>
     </section>
 
     <!-- ===== AI EXPERIENCE ===== -->
