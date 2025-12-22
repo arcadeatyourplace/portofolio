@@ -1,0 +1,281 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>Mobile Experience — Esteban Gallardo García</title>
+	<style>
+		:root{--accent:#1e1e1e}
+		body{font-family:Arial,Helvetica,sans-serif;margin:0;color:#222;background:#f5f5f5}
+		.hero{
+			min-height:320px;
+			display:flex;
+			align-items:center;
+			justify-content:center;
+			color:white;
+			position:relative;
+			background:#2b2b2b center/cover no-repeat;
+		}
+
+		/* Replace the background-image by editing the inline style or CSS */
+		.hero .overlay{
+			background:linear-gradient(180deg,rgba(0,0,0,0.35),rgba(0,0,0,0.45));
+			width:100%;
+			padding:48px 20px;
+			box-sizing:border-box;
+			text-align:center;
+		}
+
+		.hero h1{font-size:2.2rem;margin:0 0 8px}
+		.hero p{margin:0;font-size:1.05rem;opacity:0.95}
+
+		.container{width:90%;max-width:1000px;margin:28px auto;background:#fff;border-radius:8px;padding:28px;box-shadow:0 6px 20px rgba(0,0,0,0.06)}
+
+		.two-col{display:flex;gap:28px;align-items:flex-start}
+		.col{flex:1}
+		.skills-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}
+		.skill{padding:10px 12px;border-radius:6px;background:#f7f7f7;border:1px solid #eee}
+
+		/* Pie chart for Key Skills */
+		.chart-container{display:flex;flex-direction:column;align-items:center;gap:12px}
+		.chart-wrap{width:100%;max-width:340px}
+		#skillsChart{width:100%;height:auto;display:block}
+		.chart-legend{display:flex;flex-direction:column;gap:6px;font-size:0.95rem}
+		.chart-legend .row{display:flex;gap:8px;align-items:center}
+		.swatch{width:14px;height:14px;border-radius:3px;display:inline-block}
+
+		@media (max-width:800px){
+			.two-col{flex-direction:column}
+			.skills-grid{grid-template-columns:repeat(1,1fr)}
+			.hero h1{font-size:1.6rem}
+		}
+
+		/* Project rows: video left, text right (stack on small screens) */
+		.project-row{display:flex;gap:20px;align-items:center;margin:18px 0}
+		.project-video{flex:0 0 48%;max-width:520px}
+		.project-video iframe{width:100%;height:100%;aspect-ratio:16/9;border:0;border-radius:6px;box-shadow:0 6px 18px rgba(0,0,0,0.08)}
+		.project-desc{flex:1}
+		.project-desc h4{margin-top:0}
+
+		@media (max-width:900px){
+			.project-row{flex-direction:column}
+			.project-video{width:100%;flex:0 0 auto}
+		}
+
+		/* Separator between project sections */
+		.section-sep{height:1px;background:#e6e6e6;margin:18px 0;border-radius:2px}
+
+		/* Gantt-style development timeline */
+		.gantt{background:#fff;border:1px solid #eee;padding:14px;border-radius:8px}
+		.gantt-track{position:relative;padding:4px 8px;background:transparent}
+		.gantt-scale{display:flex;gap:6px;font-size:12px;color:#666;margin-bottom:8px;flex-wrap:wrap}
+		.gantt-row{display:flex;align-items:center;gap:12px;margin:10px 0}
+		.gantt-label{width:160px;font-weight:600;color:#333}
+		.gantt-bar-track{flex:1;height:22px;background:#f1f1f1;border-radius:6px;position:relative}
+		.gantt-bar{position:absolute;left:0;top:0;bottom:0;border-radius:6px}
+		.gantt-labels{display:flex;flex-direction:column;gap:10px;margin-bottom:8px}
+
+		/* colors */
+		.gantt-pre{background:#4CAF50}
+		.gantt-design{background:#2196F3}
+		.gantt-dev{background:#FF9800}
+		.gantt-test{background:#9C27B0}
+		.gantt-release{background:#607D8B}
+
+		@media (max-width:700px){
+			.gantt-track{height:120px}
+			.gantt-item{position:static;height:auto;padding:10px;border-radius:6px}
+			.gantt{padding:10px}
+		}
+	</style>
+</head>
+<body>
+	<header class="hero" style="background-image:url('assets/banner.png')">
+		<div class="overlay">
+			<h1>Mobile Experience</h1>
+			<p>Creating scalable projects for a wide range of devices.</p>
+		</div>
+	</header>
+
+	<main class="container">
+		<section>
+			<div class="two-col">
+				<div class="col">
+					<h2>Overview</h2>
+					<p>I design and implement mobile applications across native and cross-platform technologies. I focus on performance, accessibility, maintainability and delivering solid user experiences on a wide range of devices — from low-end Android phones to the latest iOS hardware.</p>
+
+					<h3>Approach</h3>
+					<ul>
+						<li>Architecture: modular codebases, feature-driven modules, clean separation of concerns</li>
+						<li>Reliability: offline-first strategies, resilient networking, background sync</li>
+						<li>Delivery: CI/CD pipelines, automated testing, store submission workflows</li>
+					</ul>
+				</div>
+
+				<aside class="col">
+					<h3>Key Skills</h3>
+					<div class="chart-container">
+						<div class="chart-wrap">
+							<canvas id="skillsChart" width="340" height="340" aria-label="Experience pie chart" role="img"></canvas>
+						</div>
+						<div class="chart-legend" aria-hidden="false">
+							<div class="row"><span class="swatch" style="background:#4CAF50"></span> Java — 30%</div>
+							<div class="row"><span class="swatch" style="background:#2196F3"></span> Flash — 10%</div>
+							<div class="row"><span class="swatch" style="background:#FF9800"></span> Unity — 60%</div>
+						</div>
+					</div>
+				</aside>
+			</div>
+		</section>
+
+        <div class="section-sep" aria-hidden="true"></div>
+		<section style="margin-top:20px">
+			<h2>Selected Projects</h2>
+
+			<!-- Java projects -->
+			<div class="project-row" aria-labelledby="proj-java">
+				<div class="project-video">
+					<iframe src="https://www.youtube.com/embed/VIDEO_ID_JAVA" title="Java Project Demo" allowfullscreen allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"></iframe>
+				</div>
+				<div class="project-desc">
+					<h4 id="proj-java">Java Projects (2000–2008)</h4>
+					<p>Descriptions of Java-based projects: applets, backend tools, and mobile integrations. Add brief summaries, your role, technologies used, and links to repos or demos.</p>
+					<ul>
+						<li>Example: Enterprise mobile utility written in Java SE with optimized resource use.</li>
+					</ul>
+				</div>
+			</div>
+
+			<div class="section-sep" aria-hidden="true"></div>
+
+			<!-- Flash projects -->
+			<div class="project-row" aria-labelledby="proj-flash">
+				<div class="project-desc">
+					<h4 id="proj-flash">Flash Projects (2006–2012)</h4>
+					<p>Interactive experiences and animations built with ActionScript and Flash. Summarize the projects, responsibilities, and technical notes (performance, tooling, cross-platform delivery).</p>
+					<ul>
+						<li>Example: Interactive training module with custom rendering and efficient streaming of assets.</li>
+					</ul>
+				</div>
+				<div class="project-video">
+					<iframe src="https://www.youtube.com/embed/VIDEO_ID_FLASH" title="Flash Project Demo" allowfullscreen allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"></iframe>
+				</div>
+			</div>
+
+			<div class="section-sep" aria-hidden="true"></div>
+
+			<!-- Unity projects -->
+			<div class="project-row" aria-labelledby="proj-unity">
+				<div class="project-video">
+					<iframe src="https://www.youtube.com/embed/VIDEO_ID_UNITY" title="Unity Project Demo" allowfullscreen allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"></iframe>
+				</div>
+				<div class="project-desc">
+					<h4 id="proj-unity">Unity Projects (2010–Present)</h4>
+					<p>Modern Unity applications and games for mobile devices. Describe platforms targeted, performance strategies, plugins used, and notable achievements.</p>
+					<ul>
+						<li>Example: Cross-platform Unity app with optimized mobile rendering and native plugin integrations.</li>
+					</ul>
+				</div>
+			</div>
+		</section>
+        <div class="section-sep" aria-hidden="true"></div>
+
+		<!-- ===== GANTT: Development Process ===== -->
+		<section style="margin-top:20px">
+			<h2>Development Process (Gantt)</h2>
+			<p>Typical timeline for a mobile project — durations shown visually.</p>
+			<div class="gantt" aria-label="Development process timeline">
+				<div class="gantt-scale">
+					<div>Scale: ~26 weeks total (approx.)</div>
+				</div>
+				<div class="gantt-track" role="img" aria-label="Gantt chart showing pre-production, design, development, testing and release">
+					<!-- Each phase is its own row. widths are percentage of total (26 weeks) -->
+					<div class="gantt-row">
+						<div class="gantt-label">Pre-Production</div>
+						<div class="gantt-bar-track">
+							<div class="gantt-bar gantt-pre" style="left:0%; width:7.7%"><span style="padding-left:8px;font-size:12px">2 weeks</span></div>
+						</div>
+					</div>
+					<div class="gantt-row">
+						<div class="gantt-label">Design</div>
+						<div class="gantt-bar-track">
+							<div class="gantt-bar gantt-design" style="left:7.7%; width:7.7%"><span style="padding-left:8px;font-size:12px">2 weeks</span></div>
+						</div>
+					</div>
+					<div class="gantt-row">
+						<div class="gantt-label">Development</div>
+						<div class="gantt-bar-track">
+							<div class="gantt-bar gantt-dev" style="left:15.4%; width:61.5%"><span style="padding-left:8px;font-size:12px">4 months</span></div>
+						</div>
+					</div>
+					<div class="gantt-row">
+						<div class="gantt-label">Testing</div>
+						<div class="gantt-bar-track">
+							<div class="gantt-bar gantt-test" style="left:76.9%; width:15.4%"><span style="padding-left:8px;font-size:12px">1 month</span></div>
+						</div>
+					</div>
+					<div class="gantt-row">
+						<div class="gantt-label">Release</div>
+						<div class="gantt-bar-track">
+							<div class="gantt-bar gantt-release" style="left:92.3%; width:7.7%"><span style="padding-left:8px;font-size:12px">2 weeks</span></div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</section>
+        <div class="section-sep" aria-hidden="true"></div>
+	</main>
+
+	<footer style="text-align:center;padding:18px;color:#666;font-size:0.95rem">© 2025 Esteban Gallardo García</footer>
+
+	<script>
+		// Draw a simple pie chart on the canvas for the given data
+		(function(){
+			const data = [
+				{label:'Java', value:30, color:'#4CAF50'},
+				{label:'Flash', value:10, color:'#2196F3'},
+				{label:'Unity', value:60, color:'#FF9800'}
+			];
+
+			const canvas = document.getElementById('skillsChart');
+			if(!canvas || !canvas.getContext) return;
+			const ctx = canvas.getContext('2d');
+			const DPR = window.devicePixelRatio || 1;
+			const size = Math.min(canvas.width, canvas.height);
+			canvas.width = size * DPR; canvas.height = size * DPR;
+			canvas.style.width = size + 'px'; canvas.style.height = size + 'px';
+			ctx.scale(DPR, DPR);
+
+			const cx = size/2, cy = size/2, radius = size*0.38;
+			let total = data.reduce((s,d)=>s+d.value,0);
+			let start = -Math.PI/2; // start at top
+			data.forEach(item => {
+				const slice = (item.value/total) * Math.PI*2;
+				ctx.beginPath();
+				ctx.moveTo(cx,cy);
+				ctx.fillStyle = item.color;
+				ctx.arc(cx,cy,radius,start,start+slice);
+				ctx.closePath();
+				ctx.fill();
+				start += slice;
+			});
+
+			// draw inner circle for donut look
+			ctx.beginPath();
+			ctx.fillStyle = '#ffffff';
+			ctx.arc(cx,cy,radius*0.55,0,Math.PI*2);
+			ctx.fill();
+			ctx.closePath();
+
+			// draw labels in center
+			ctx.fillStyle = '#333';
+			ctx.font = 'bold 14px Arial';
+			ctx.textAlign = 'center';
+			ctx.fillText('Mobile', cx, cy-6);
+			ctx.font = '12px Arial';
+			ctx.fillText('Experience', cx, cy+12);
+		})();
+	</script>
+</body>
+</html>

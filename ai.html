@@ -1,0 +1,483 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>AI Experience — Esteban Gallardo García</title>
+  <style>
+    body{font-family:Arial,Helvetica,sans-serif;margin:0;background:#f5f5f5;color:#222}
+    .hero{max-width:1200px;margin:20px auto;padding:0 16px}
+
+    /* Carousel */
+    .carousel{position:relative;overflow:hidden;border-radius:8px;background:#000}
+    .slides{position:relative;height:360px}
+    .slide{position:absolute;inset:0;opacity:0;transition:opacity .6s ease;background-size:cover;background-position:center;pointer-events:none}
+    .slide.active{opacity:1;pointer-events:auto}
+
+    .carousel .controls{position:absolute;inset:0;display:flex;align-items:center;justify-content:space-between;padding:12px;pointer-events:none}
+    .btn{background:rgba(0,0,0,0.35);color:#fff;border:0;padding:8px 10px;border-radius:6px;cursor:pointer;pointer-events:auto}
+
+    .carousel .indicators{position:absolute;left:50%;transform:translateX(-50%);bottom:10px;display:flex;gap:8px}
+    .dot{width:10px;height:10px;border-radius:50%;background:rgba(255,255,255,0.45);cursor:pointer}
+    .dot.active{background:#fff}
+
+    /* Text sections that change with slides */
+    .text-blocks{display:flex;gap:18px;align-items:start;margin-top:18px}
+    .text-block{flex:1;background:#fff;padding:18px;border-radius:8px;box-shadow:0 6px 18px rgba(0,0,0,0.06);text-align:center}
+    .text-block h3{margin:0 0 8px;font-size:1.1rem}
+    .text-block p{margin:0;color:#444}
+
+    @media (max-width:900px){
+      .slides{height:220px}
+      .text-blocks{flex-direction:column}
+    }
+
+    /* Vertical carousel sections (text left, image right) */
+    .v-section{margin-top:26px}
+    .v-carousel{background:#fff;border-radius:8px;box-shadow:0 6px 18px rgba(0,0,0,0.06);overflow:hidden}
+    .v-carousel .v-header{padding:12px 16px;border-bottom:1px solid #f0f0f0;font-weight:700}
+    .v-viewport{height:220px;overflow:hidden;position:relative}
+    .v-slides{transition:transform .5s ease}
+    .v-slide{display:flex;gap:16px;align-items:center;padding:14px;box-sizing:border-box;height:220px}
+    .v-text{flex:1;text-align:left}
+    .v-image{flex:0 0 40%;display:flex;align-items:center;justify-content:center}
+    .v-image img{max-width:100%;max-height:180px;border-radius:6px}
+    .v-controls{position:absolute;right:12px;top:0;bottom:0;display:flex;flex-direction:column;justify-content:space-between;align-items:center;padding:12px;pointer-events:auto}
+    .v-btn{background:rgba(0,0,0,0.55);color:#fff;border:0;padding:8px 10px;border-radius:6px;cursor:pointer}
+    .v-indicators{display:flex;gap:8px;padding:10px 16px;justify-content:center}
+    .v-dot{width:10px;height:10px;border-radius:50%;background:#e0e0e0}
+    .v-dot.active{background:#333}
+
+    @media (max-width:700px){
+      .v-slide{flex-direction:column;text-align:center}
+      .v-image{flex:0 0 auto}
+      .v-viewport{height:280px}
+      .v-slide{height:280px}
+    }
+
+    /* Orbital selection nodes */
+    .container {
+        width: 800px;
+        height: 800px;
+        position: relative;
+        margin: 0 auto;
+    }
+
+    .circle-node {
+        position: absolute;
+        width: 120px;
+        height: 120px;
+        border-radius: 50%;
+        border: 5px solid black;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+        cursor: pointer;
+        transition: all 0.4s ease;
+        overflow: hidden;
+    }
+
+    .circle-node.selected {
+        width: 300px;
+        height: 300px;
+        z-index: 10;
+        font-size: 1.3em;
+        padding: 20px;
+    }
+
+    .circle-node.unselected {
+        opacity: 0.4;
+        width: 90px;
+        height: 90px;
+        font-size: 0.8em;
+    }
+
+    .node-text {
+        opacity: 0;
+        transition: opacity 0.3s ease;
+        font-size: 0.9em;
+        padding: 10px;
+    }
+
+    .circle-node.selected .node-text {
+        opacity: 1;
+    }
+
+    /* Node colors + positions */
+    #programming {
+        background: #d9b13b;
+        top: 40%;
+        left: 80%;
+        transform: translate(-50%, -50%);
+    }
+
+    #companion {
+        background: #e995d3;
+        top: 23%;
+        left: 35%;
+        transform: translate(-50%, -50%);
+    }
+
+    #demos {
+        background: #2bb8ff;
+        top: 70%;
+        left: 30%;
+        transform: translate(-50%, -50%);
+    }
+
+    #tools {
+        background: #8bf3a8;
+        top: 77%;
+        left: 65%;
+        transform: translate(-50%, -50%);
+    }
+
+    /* Invisible orbit circle (just for visual help) */
+    .orbit {
+        position: absolute;
+        width: 520px;
+        height: 520px;
+        border-radius: 50%;
+        border: 5px solid black;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        pointer-events: none;
+    }
+
+    .unselected-text {
+        opacity: 1;
+        transition: opacity 0.3s;
+        pointer-events: none;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);        
+    }
+
+    .selected-text {
+        opacity: 0;
+        transition: opacity 0.3s;
+        pointer-events: none;
+    }
+
+    .circle-node.selected .unselected-text {
+        opacity: 0;
+    }
+
+    .circle-node.selected .selected-text {
+        opacity: 1;
+    }
+
+  </style>
+</head>
+<body>
+  <main class="hero">
+    <section class="carousel" aria-label="AI carousel">
+      <div class="slides" id="slides">
+        <div class="slide" data-index="0" data-url="projects/ai-companion.html" style="background-image:url('assets/banner.png')" aria-hidden="false"></div>
+        <div class="slide" data-index="1" data-url="projects/programming-ai.html" style="background-image:url('assets/banner2.png')" aria-hidden="true"></div>
+        <div class="slide" data-index="2" data-url="projects/incredible-tools.html" style="background-image:url('assets/banner3.png')" aria-hidden="true"></div>
+      </div>
+
+      <div class="controls">
+        <button id="prev" class="btn" aria-label="Previous">‹</button>
+        <button id="next" class="btn" aria-label="Next">›</button>
+      </div>
+
+      <div class="indicators" id="indicators" aria-hidden="false"></div>
+    </section>
+
+    <div class="text-blocks">
+      <div class="text-block" id="textA">
+        <h3 id="textA-title">AI as a companion</h3>
+        <p id="textA-body">We are exploring how LLM can helps us in our journey.</p>
+      </div>
+      </div>
+
+      <!-- Three vertical carousel sections -->
+      <section class="v-section">
+        <div class="v-carousel" id="vcar1">
+          <div class="v-header">AI Companion Examples</div>
+          <div class="v-viewport">
+            <div class="v-slides">
+              <div class="v-slide">
+                <div class="v-text"><h4>Companion Prototype</h4><p>Conversational assistant prototype focused on user wellbeing and context-aware responses.</p></div>
+                <div class="v-image"><img src="assets/ai1.jpg" alt="Companion prototype"></div>
+              </div>
+              <div class="v-slide">
+                <div class="v-text"><h4>Chat Integration</h4><p>Embedded chat with persona state and memory across sessions.</p></div>
+                <div class="v-image"><img src="assets/ai2.jpg" alt="Chat integration"></div>
+              </div>
+              <div class="v-slide">
+                <div class="v-text"><h4>Voice Companion</h4><p>Voice-driven companion with speech-to-text and TTS fallback for accessibility.</p></div>
+                <div class="v-image"><img src="assets/ai3.jpg" alt="Voice companion"></div>
+              </div>
+            </div>
+            <div class="v-controls"><button class="v-btn v-prev">▲</button><button class="v-btn v-next">▼</button></div>
+          </div>
+          <div class="v-indicators"></div>
+        </div>
+      </section>
+
+      <section class="v-section">
+        <div class="v-carousel" id="vcar2">
+          <div class="v-header">Programming AI</div>
+          <div class="v-viewport">
+            <div class="v-slides">
+              <div class="v-slide">
+                <div class="v-text"><h4>Python Tooling</h4><p>Scripts and modules used for model training and inference orchestration.</p></div>
+                <div class="v-image"><img src="assets/ai4.jpg" alt="Python tooling"></div>
+              </div>
+              <div class="v-slide">
+                <div class="v-text"><h4>Data Pipelines</h4><p>ETL pipelines and preprocessing for high-quality datasets.</p></div>
+                <div class="v-image"><img src="assets/ai5.jpg" alt="Data pipelines"></div>
+              </div>
+              <div class="v-slide">
+                <div class="v-text"><h4>Model Serving</h4><p>Containerized model endpoints with autoscaling and monitoring.</p></div>
+                <div class="v-image"><img src="assets/ai6.jpg" alt="Model serving"></div>
+              </div>
+            </div>
+            <div class="v-controls"><button class="v-btn v-prev">▲</button><button class="v-btn v-next">▼</button></div>
+          </div>
+          <div class="v-indicators"></div>
+        </div>
+      </section>
+
+      <section class="v-section">
+        <div class="v-carousel" id="vcar3">
+          <div class="v-header">Tools & Demos</div>
+          <div class="v-viewport">
+            <div class="v-slides">
+              <div class="v-slide">
+                <div class="v-text"><h4>Visualization Tool</h4><p>Interactive visualizer for model predictions and data exploration.</p></div>
+                <div class="v-image"><img src="assets/ai7.jpg" alt="Visualization tool"></div>
+              </div>
+              <div class="v-slide">
+                <div class="v-text"><h4>Annotation UI</h4><p>Lightweight annotation interface to speed up labeling workflows.</p></div>
+                <div class="v-image"><img src="assets/ai8.jpg" alt="Annotation UI"></div>
+              </div>
+              <div class="v-slide">
+                <div class="v-text"><h4>Plugin Demos</h4><p>Small plugins demonstrating integrations with third-party services.</p></div>
+                <div class="v-image"><img src="assets/ai9.jpg" alt="Plugin demos"></div>
+              </div>
+            </div>
+            <div class="v-controls"><button class="v-btn v-prev">▲</button><button class="v-btn v-next">▼</button></div>
+          </div>
+          <div class="v-indicators"></div>
+        </div>
+      </section>
+    </div>
+
+    <div class="container">
+        <div class="orbit"></div>
+
+
+        <div class="circle-node" id="programming">
+            <div>
+                <div class="unselected-text">
+                    Programming AI
+                </div>
+
+                <div class="selected-text">
+                    <strong>Programming AI</strong>
+                    <br><br>
+                    This is a description of the programming code I've done with AI.
+                </div>
+            </div>
+        </div>        
+
+        <div class="circle-node" id="companion">
+            <div>
+                <div class="unselected-text">
+                    Companion
+                </div>
+
+                <div class="selected-text">
+                    <strong>Companion</strong>
+                    <br><br>
+                    This is a description of the AI companion project I've been working on.
+                </div>
+            </div>
+        </div>        
+
+        <div class="circle-node" id="demos">
+            <div>
+                <div class="unselected-text">
+                    Demos
+                </div>
+
+                <div class="selected-text">
+                    <strong>Demos</strong>
+                    <br><br>
+                    This is a description of the AI demos I've created.
+                </div>
+            </div>
+        </div>        
+
+        <div class="circle-node" id="tools">
+            <div>
+                <div class="unselected-text">
+                    Tools
+                </div>
+
+                <div class="selected-text">
+                    <strong>Tools</strong>
+                    <br><br>
+                    This is a description of the incredible AI tools I've developed. 
+                </div>
+            </div>
+        </div>        
+
+    </div>
+  </main>
+
+  <script>
+    // Slide data: title and body for two text sections
+    const slidesData = [
+      {title:'AI as a companion', body:'We are exploring how LLM can helps us in our journey.'},
+      {title:'Programming AI', body:'We will use Python in order to develop application with the AI.'},
+      {title:'Incredible Tools', body:"Some of the amazing tools I've developed."}
+    ];
+
+    const slides = Array.from(document.querySelectorAll('.slide'));
+    const indicators = document.getElementById('indicators');
+    const prevBtn = document.getElementById('prev');
+    const nextBtn = document.getElementById('next');
+    const textA_title = document.getElementById('textA-title');
+    const textA_body = document.getElementById('textA-body');
+    
+    let current = 0;
+    let timer = null;
+    const INTERVAL = 5000;
+
+    function renderIndicators(){
+      indicators.innerHTML = '';
+      slides.forEach((s,i)=>{
+        const d = document.createElement('div');
+        d.className = 'dot' + (i===current? ' active':'');
+        d.dataset.index = i;
+        d.addEventListener('click', ()=> goTo(i));
+        indicators.appendChild(d);
+      });
+    }
+
+    function updateText(idx){
+      const data = slidesData[idx];
+      textA_title.textContent = data.title;
+      textA_body.textContent = data.body;
+    }
+
+    function show(index){
+      slides.forEach((s,i)=>{
+        s.classList.toggle('active', i===index);
+        s.setAttribute('aria-hidden', i===index ? 'false' : 'true');
+      });
+      current = index;
+      renderIndicators();
+      updateText(index);
+    }
+
+    function next(){ goTo((current+1)%slides.length); }
+    function prev(){ goTo((current-1+slides.length)%slides.length); }
+
+    function goTo(index){
+      show(index);
+      restartTimer();
+    }
+
+    function restartTimer(){
+      if(timer) clearInterval(timer);
+      timer = setInterval(next, INTERVAL);
+    }
+
+    // init
+    document.addEventListener('DOMContentLoaded', ()=>{
+      show(0);
+      restartTimer();
+      // clicking the visible slide opens its link (if provided)
+      document.getElementById('slides').addEventListener('click', (e) => {
+        const url = slides[current] && slides[current].dataset && slides[current].dataset.url;
+        if(url){ window.open(url, '_blank'); }
+      });
+      nextBtn.addEventListener('click', (e)=>{ e.stopPropagation(); next(); });
+      prevBtn.addEventListener('click', (e)=>{ e.stopPropagation(); prev(); });
+
+      // Initialize vertical carousels
+      function initVCarousel(id){
+        const root = document.getElementById(id);
+        if(!root) return;
+        const viewport = root.querySelector('.v-viewport');
+        const slidesWrap = root.querySelector('.v-slides');
+        const slidesV = Array.from(root.querySelectorAll('.v-slide'));
+        const prev = root.querySelector('.v-prev');
+        const next = root.querySelector('.v-next');
+        const indicators = root.querySelector('.v-indicators');
+        let idx = 0;
+
+        function renderIndicators(){
+          if(!indicators) return;
+          indicators.innerHTML = '';
+          slidesV.forEach((s,i)=>{
+            const d = document.createElement('div');
+            d.className = 'v-dot' + (i===idx? ' active':'');
+            d.addEventListener('click', ()=> goTo(i));
+            indicators.appendChild(d);
+          });
+        }
+
+        function update(){
+          const h = viewport.clientHeight || 220;
+          slidesWrap.style.transform = `translateY(${ -idx * h }px)`;
+          renderIndicators();
+        }
+
+        function goTo(i){ idx = (i+slidesV.length)%slidesV.length; update(); }
+        function nextSlide(){ goTo(idx+1); }
+        function prevSlide(){ goTo(idx-1); }
+
+        // controls
+        if(next) next.addEventListener('click', (e)=>{ e.stopPropagation(); nextSlide(); });
+        if(prev) prev.addEventListener('click', (e)=>{ e.stopPropagation(); prevSlide(); });
+
+        // keyboard support
+        root.addEventListener('keydown', (e)=>{
+          if(e.key === 'ArrowDown') nextSlide();
+          if(e.key === 'ArrowUp') prevSlide();
+        });
+
+        // handle resize
+        window.addEventListener('resize', update);
+
+        // initial
+        update();
+      }
+
+      initVCarousel('vcar1');
+      initVCarousel('vcar2');
+      initVCarousel('vcar3');
+    });
+
+    // Orbital selection nodes logic
+    const nodes = document.querySelectorAll(".circle-node");
+
+    nodes.forEach(node => {
+        node.addEventListener("click", () => {
+            const isSelected = node.classList.contains("selected");
+
+            nodes.forEach(n => {
+                n.classList.remove("selected");
+                n.classList.add("unselected");
+            });
+
+            if (!isSelected) {
+                node.classList.add("selected");
+                node.classList.remove("unselected");
+            }
+        });
+    });
+
+  </script>
+</body>
+</html>

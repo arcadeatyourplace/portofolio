@@ -76,7 +76,7 @@
         }
 
         .mobile-experience img {
-            width: 160px;
+            width: 260px;
             height: auto;
             object-fit: cover;
             border-radius: 8px;
@@ -109,6 +109,216 @@
                 padding: 0 8px;
             }
         }
+
+        /* VR video row: three responsive YouTube embeds */
+        .video-row {
+            display: flex;
+            gap: 16px;
+            align-items: stretch;
+        }
+
+        .video-wrap {
+            flex: 1 1 0;
+            position: relative;
+            aspect-ratio: 16/9;
+            background: #000;
+            border-radius: 6px;
+            overflow: hidden;
+            box-shadow: 0 6px 18px rgba(0,0,0,0.08);
+        }
+
+        .video-wrap iframe {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            border: 0;
+        }
+
+        @media (max-width: 900px) {
+            .video-row {
+                flex-direction: column;
+            }
+
+            .video-row .video-wrap {
+                width: 100%;
+            }
+        }
+
+        /* AI Experience: text left, image right */
+        .ai-experience {
+            display: flex;
+            gap: 24px;
+            align-items: center;
+        }
+
+        .ai-experience .text {
+            flex: 1;
+            text-align: left;
+        }
+
+        .ai-experience img {
+            width: 240px;
+            height: auto;
+            border-radius: 8px;
+            flex-shrink: 0;
+            box-shadow: 0 6px 18px rgba(0,0,0,0.08);
+        }
+
+        @media (max-width: 700px) {
+            .ai-experience {
+                flex-direction: column;
+                gap: 12px;
+            }
+
+            .ai-experience img {
+                width: 80%;
+                max-width: 420px;
+                margin: 0 auto;
+            }
+
+            .ai-experience .text {
+                text-align: left;
+                padding: 0 8px;
+            }
+        }
+
+        /* Game development timeline (horizontal on wide screens, vertical on small screens) */
+        .timeline {
+            position: relative;
+            display: flex;
+            gap: 24px;
+            align-items: center;
+            padding: 24px 0;
+        }
+
+        .timeline:before {
+            content: "";
+            position: absolute;
+            left: 2%;
+            right: 2%;
+            height: 6px;
+            background: #e9e9e9;
+            top: 30%;
+            transform: translateY(-50%);
+            z-index: 1;
+            border-radius: 4px;
+        }
+
+        .timeline-item {
+            position: relative;
+            z-index: 2;
+            flex: 1 1 0;
+            text-align: center;
+        }
+
+        .timeline-item .dot {
+            width: 22px;
+            height: 22px;
+            border-radius: 50%;
+            background: #ffffff;
+            border: 4px solid #bdbdbd;
+            margin: 0 auto;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.06);
+        }
+
+        .timeline-item.current .dot {
+            background: #1e1e1e;
+            border-color: #1e1e1e;
+        }
+
+        .timeline-item .label {
+            margin-top: 10px;
+        }
+
+        .timeline-item .years {
+            display: block;
+            font-size: 0.9rem;
+            color: #666;
+            margin-top: 6px;
+        }
+
+        @media (max-width: 700px) {
+            .timeline {
+                flex-direction: column;
+                align-items: flex-start;
+                padding-left: 20px;
+            }
+
+            .timeline:before {
+                left: 20px;
+                right: auto;
+                width: 6px;
+                height: 100%;
+                top: 0;
+                transform: none;
+            }
+
+            .timeline-item {
+                display: flex;
+                align-items: center;
+                gap: 12px;
+                text-align: left;
+                width: 100%;
+                padding: 12px 0;
+            }
+
+            .timeline-item .dot {
+                margin: 0;
+            }
+
+            .timeline-item .label {
+                margin-top: 0;
+            }
+        }
+
+        /* Certifications: display 4 PDFs in a row, stack on small screens */
+        .pdf-row {
+            display: flex;
+            gap: 16px;
+            align-items: stretch;
+            margin-top: 12px;
+        }
+
+        .pdf-card {
+            flex: 1 1 0;
+            min-width: 180px;
+            height: 260px;
+            border-radius: 8px;
+            overflow: hidden;
+            background: #fff;
+            box-shadow: 0 6px 18px rgba(0,0,0,0.06);
+            border: 1px solid #ececec;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .pdf-card iframe, .pdf-card object {
+            width: 100%;
+            height: 100%;
+            border: 0;
+            display: block;
+            flex: 1 1 auto;
+        }
+
+        .pdf-card .caption {
+            padding: 8px;
+            font-size: 0.9rem;
+            text-align: center;
+            background: #fafafa;
+            border-top: 1px solid #f0f0f0;
+        }
+
+        @media (max-width: 900px) {
+            .pdf-row {
+                flex-direction: column;
+            }
+
+            .pdf-card {
+                height: 360px;
+                min-width: auto;
+            }
+        }
     </style>
 </head>
 
@@ -123,7 +333,7 @@
     <section id="mobile">
         <h2>Mobile Experience</h2>
         <div class="mobile-experience">
-            <img src="assets/mobile-example.jpg" alt="Mobile app screenshot">
+            <img src="assets/mobile.jpg" alt="Mobile app screenshot">
             <div class="content">
                 <p><strong>Mobile Developer —</strong> I design and build native and cross-platform mobile apps for Android and iOS. My experience includes working with Kotlin, Swift, Flutter, and React Native to deliver performant, accessible, and user-friendly applications.</p>
                 <p>Highlights: offline-first architectures, REST and GraphQL integrations, CI/CD for app stores, performance profiling, and integrating device features like camera, sensors and push notifications.</p>
@@ -134,19 +344,90 @@
     <!-- ===== AI EXPERIENCE ===== -->
     <section id="ai">
         <h2>AI Experience</h2>
-        <p>[Add content about your AI development experience here]</p>
+        <div class="ai-experience">
+            <div class="text">
+                <p><strong>AI & ML Engineer —</strong> I build and deploy machine learning systems, from prototyping models to production inference. My work includes model training (PyTorch/TensorFlow), data pipelines, MLOps, and integrating ML into products for real-time and batch use cases.</p>
+                <p>Highlights: model optimization, ONNX export, cloud deployment, data labeling workflows, and building explainable interfaces for stakeholders.</p>
+            </div>
+            <img src="assets/ai.jpg" alt="AI project visualization">
+        </div>
     </section>
 
     <!-- ===== VR EXPERIENCE ===== -->
     <section id="vr">
         <h2>VR Experience</h2>
-        <p>[Add content about your VR development experience here]</p>
+        <p>I create immersive VR experiences for a variety of platforms. Below are a few project demos and walkthrough videos.</p>
+
+        <div class="video-row">
+            <div class="video-wrap">
+                <iframe src="https://www.youtube.com/embed/qG3m40VB6eA?si=3E2byKOEYYFvhHnX" title="VR Demo 1" allowfullscreen allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"></iframe>
+            </div>
+            <div class="video-wrap">
+                <iframe src="https://www.youtube.com/embed/6Kb3qo_IAYU?si=yoLW60ATHJ94Mgly" title="VR Demo 2" allowfullscreen allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"></iframe>
+            </div>
+            <div class="video-wrap">
+                <iframe src="https://www.youtube.com/embed/oLj5mftsEZw?si=qKpPsGOpipmKhkAE" title="VR Demo 3" allowfullscreen allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"></iframe>
+            </div>
+        </div>
     </section>
 
     <!-- ===== GAME DEVELOPMENT EXPERIENCE ===== -->
     <section id="games">
         <h2>Game Development Experience</h2>
-        <p>[Add content about your game development experience here]</p>
+        <p>Below is a timeline showing the primary programming languages and engines I've used throughout my career.</p>
+
+        <div class="timeline" aria-label="Programming languages timeline">
+            <div class="timeline-item">
+                <div class="dot" aria-hidden="true"></div>
+                <div class="label"><strong>Java</strong><span class="years">2000–2008</span></div>
+            </div>
+
+            <div class="timeline-item">
+                <div class="dot" aria-hidden="true"></div>
+                <div class="label"><strong>Flash</strong><span class="years">2006–2012</span></div>
+            </div>
+
+            <div class="timeline-item current">
+                <div class="dot" aria-hidden="true"></div>
+                <div class="label"><strong>Unity</strong><span class="years">2010–Present</span></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== CERTIFICATIONS ===== -->
+    <section id="certifications">
+        <h2>Certifications</h2>
+        <p>Selected certifications and diplomas — click to open or download.</p>
+
+        <div class="pdf-row">
+            <a href="docs/doc1.pdf">
+              <div class="pdf-card">
+                  <iframe src="docs/doc1.pdf" title="Certificate 1"></iframe>
+                  <div class="caption">Certificate 1</div>
+              </div>
+            </a>
+
+            <a href="docs/doc2.pdf">
+            <div class="pdf-card">
+                <iframe src="docs/doc2.pdf" title="Certificate 2"></iframe>
+                <div class="caption">Certificate 2</div>
+            </div>
+            </a>
+
+            <a href="docs/doc3.pdf">
+            <div class="pdf-card">
+                <iframe src="docs/doc3.pdf" title="Certificate 3"></iframe>
+                <div class="caption">Certificate 3</div>
+            </div>
+            </a>
+
+            <a href="docs/doc3.pdf">
+            <div class="pdf-card">
+                <iframe src="docs/doc4.pdf" title="Certificate 4"></iframe>
+                <div class="caption">Certificate 4</div>
+            </div>
+            </a>
+        </div>
     </section>
 
     <!-- ===== CONTACT FORM ===== -->
