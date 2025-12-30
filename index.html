@@ -12,22 +12,26 @@
             color: #333;
         }
 
-        header {
-            background: #1e1e1e;
-            color: white;
-            text-align: center;
-            padding: 60px 20px;
+        .hero{
+            min-height:320px;
+            display:flex;
+            align-items:center;
+            justify-content:center;
+            color:white;
+            position:relative;
+            background:#2b2b2b center/cover no-repeat;
         }
 
-        header h1 {
-            font-size: 2.5rem;
-            margin: 0;
+        .hero .overlay{
+            background:linear-gradient(180deg,rgba(0,0,0,0.35),rgba(0,0,0,0.45));
+            width:100%;
+            padding:48px 20px;
+            box-sizing:border-box;
+            text-align:center;
         }
 
-        header p {
-            font-size: 1.2rem;
-            margin-top: 10px;
-        }
+        .hero h1{font-size:2.2rem;margin:0 0 8px}
+        .hero p{margin:0;font-size:1.05rem;opacity:0.95}
 
         section {
             background: white;
@@ -181,6 +185,7 @@
                 text-align: left;
                 padding: 0 8px;
             }
+            .hero h1{font-size:1.6rem}
         }
 
         /* Game development timeline (horizontal on wide screens, vertical on small screens) */
@@ -324,9 +329,11 @@
 
 <body>
     <!-- ===== HEADER BANNER ===== -->
-    <header>
-        <h1>Esteban Gallardo García</h1>
-        <p>Software engineer specialized in AI, VR, mobile and game development</p>
+    <header class="hero" style="background-image:url('assets/banner.png')">
+        <div class="overlay">
+            <h1>Esteban Gallardo García</h1>
+            <p>Software engineer specialized in AI, VR, mobile and software development</p>
+        </div>
     </header>
 
     <!-- ===== MOBILE EXPERIENCE ===== -->
